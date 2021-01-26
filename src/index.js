@@ -4,5 +4,4 @@ import "bootstrap/dist/css/bootstrap.css";
 // import Counter from "./components/counter";
 import Movies from "./components/movies";
 
-// const Elem = <h1>Todos</h1>;
 ReactDom.render(<Movies />, document.querySelector("#root"));
