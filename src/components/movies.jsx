@@ -16,7 +16,9 @@ class Movies extends Component {
 	};
 
 	render() {
-		if (this.state.movies.length !== 0) {
+		const { length: count } = this.state.movies;
+
+		if (count !== 0) {
 			return (
 				<>
 					<main className="container">
@@ -41,10 +43,9 @@ class Movies extends Component {
 									margin: 0
 								}}
 							>
-								{this.state.movies.length}
+								{count}
 							</h5>
-							{this.state.movies.length > 1 ? "movies" : "movie"}{" "}
-							in Database
+							{count > 1 ? "movies" : "movie"} in Database
 						</div>
 						<br></br>
 						<table className="table">
@@ -69,7 +70,7 @@ class Movies extends Component {
 												onClick={() => {
 													this.handleDelete(movie);
 												}}
-												className="btn btn-danger"
+												className="btn btn-danger btn-sm"
 											>
 												Delete
 											</button>
@@ -81,26 +82,25 @@ class Movies extends Component {
 					</main>
 				</>
 			);
-		} else {
-			return (
-				<>
-					<main className="container">
-						<div
-							style={{
-								marginTop: "20px",
-								fontSize: "18px",
-								fontWeight: "bold",
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "center"
-							}}
-						>
-							There is no movies!
-						</div>
-					</main>
-				</>
-			);
 		}
+		return (
+			<>
+				<main className="container">
+					<div
+						style={{
+							marginTop: "20px",
+							fontSize: "18px",
+							fontWeight: "bold",
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center"
+						}}
+					>
+						There is no movies!
+					</div>
+				</main>
+			</>
+		);
 	}
 }
 
