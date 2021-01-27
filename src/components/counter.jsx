@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 
 class Counter extends Component {
 	state = {
-		count: 0,
+		value: this.props.counter.value,
 		imageUrl: "https://picsum.photos/200",
 		alternativeText: "Random Text",
 		tags: ["tag1", "tag2", "tag3"]
@@ -23,29 +23,36 @@ class Counter extends Component {
 				<button
 					className="btn btn-info btn-sm ml-2"
 					onClick={this.handleDecrement}
-					disabled={this.state.count === 0}
+					disabled={this.state.value === 0}
 				>
-					decrease
+					Decrease
 				</button>
+				<button
+					className="btn btn-danger btn-sm ml-2"
+					onClick={this.props.onDelete}
+				>
+					Delete
+				</button>
+				<br></br>
 			</Fragment>
 		);
 	}
 
 	getBadgeClass() {
 		let bClass = "badge m-4 badge-";
-		bClass += this.state.count === 0 ? "warning" : "primary";
+		bClass += this.state.value === 0 ? "warning" : "primary";
 		return bClass;
 	}
 	handleDecrement = () => {
-		this.setState({ count: this.state.count - 1 });
+		this.setState({ value: this.state.value - 1 });
 	};
 
 	handleIncrement = () => {
-		this.setState({ count: this.state.count + 1 });
+		this.setState({ value: this.state.value + 1 });
 	};
 
 	formatCount() {
-		const { count } = this.state;
+		const { value: count } = this.state;
 		return count === 0 ? "Zero" : count;
 	}
 }
