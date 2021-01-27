@@ -23,14 +23,10 @@ class Counter extends Component {
 				<button
 					className="btn btn-info btn-sm ml-2"
 					onClick={this.handleDecrement}
+					disabled={this.state.count === 0}
 				>
 					decrease
 				</button>
-				<ul>
-					{this.state.tags.map(tag => (
-						<li key={tag}>{tag}</li>
-					))}
-				</ul>
 			</Fragment>
 		);
 	}
