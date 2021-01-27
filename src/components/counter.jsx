@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
 
 class Counter extends Component {
-	state = {
-		value: this.props.counter.value,
-		imageUrl: "https://picsum.photos/200",
-		alternativeText: "Random Text",
-		tags: ["tag1", "tag2", "tag3"]
-	};
+	// state = {
+	// 	value: this.props.counter.value,
+	// 	imageUrl: "https://picsum.photos/200",
+	// 	alternativeText: "Random Text",
+	// 	tags: ["tag1", "tag2", "tag3"]
+	// };
 
 	render() {
 		return (
@@ -16,14 +16,14 @@ class Counter extends Component {
 				</span>
 				<button
 					className="btn btn-dark btn-sm"
-					onClick={this.handleIncrement}
+					onClick={this.props.onIncrement}
 				>
 					Increase
 				</button>
 				<button
 					className="btn btn-info btn-sm ml-2"
-					onClick={this.handleDecrement}
-					disabled={this.state.value === 0}
+					onClick={this.props.onDecrement}
+					disabled={this.props.counter.value === 0}
 				>
 					Decrease
 				</button>
@@ -40,25 +40,14 @@ class Counter extends Component {
 
 	getBadgeClass() {
 		let bClass = "badge m-4 badge-";
-		bClass += this.state.value === 0 ? "warning" : "primary";
+		bClass += this.props.counter.value === 0 ? "warning" : "primary";
 		return bClass;
 	}
-	handleDecrement = () => {
-		this.setState({ value: this.state.value - 1 });
-	};
-
-	handleIncrement = () => {
-		this.setState({ value: this.state.value + 1 });
-	};
 
 	formatCount() {
-		const { value: count } = this.state;
+		const { value: count } = this.props.counter;
 		return count === 0 ? "Zero" : count;
 	}
 }
 
 export default Counter;
-
-/**
- * conditionall rendering ep 9
- */
