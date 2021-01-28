@@ -6,8 +6,7 @@ const getBadgeClass = counter => {
 	return bClass;
 };
 
-const formatCount = counter => {
-	const { value: count } = counter;
+const formatCount = ({ value: count }) => {
 	return count === 0 ? "Zero" : count;
 };
 
@@ -15,23 +14,42 @@ const Counter = props => {
 	const { counter, onIncrement, onDecrement, onDelete } = props;
 	return (
 		<>
-			<span className={getBadgeClass(counter)}>
-				{formatCount(counter)}
-			</span>
-			<button className="btn btn-dark btn-sm" onClick={onIncrement}>
-				Increase
-			</button>
-			<button
-				className="btn btn-info btn-sm ml-2"
-				onClick={onDecrement}
-				disabled={counter.value === 0}
-			>
-				Decrease
-			</button>
-			<button className="btn btn-danger btn-sm ml-2" onClick={onDelete}>
-				Delete
-			</button>
-			<br></br>
+			<div className="row">
+				<div className="col-2">
+					<span className={getBadgeClass(counter)}>
+						{formatCount(counter)}
+					</span>
+				</div>
+				<div className="col">
+					<div
+						style={{
+							height: "100%",
+							display: "flex",
+							alignItems: "center"
+						}}
+					>
+						<button
+							className="btn btn-dark btn-sm"
+							onClick={onIncrement}
+						>
+							+
+						</button>
+						<button
+							className="btn btn-info btn-sm ml-2"
+							onClick={onDecrement}
+							disabled={counter.value === 0}
+						>
+							-
+						</button>
+						<button
+							className="btn btn-danger btn-sm ml-2"
+							onClick={onDelete}
+						>
+							x
+						</button>
+					</div>
+				</div>
+			</div>
 		</>
 	);
 };
