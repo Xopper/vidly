@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import Like from "./like";
 import { getMovies } from "../services/fakeMovieService";
 
 class Movies extends Component {
 	state = {
 		movies: getMovies(),
-		tableHead: ["Title", "Genre", "Stock", "Rate", ""]
+		tableHead: ["Title", "Genre", "Stock", "Rate", "", ""]
 	};
 
 	handleDelete = movie => {
@@ -13,6 +14,19 @@ class Movies extends Component {
 				return elem._id !== movie._id;
 			})
 		});
+	};
+
+	handleLike = (movie, index) => {
+		/**
+		 * this is a second way to do cloning
+		 * and updating state
+		 */
+
+		// foo ^= ture; => toggling  if its true make it false , Nate that it returns 0 or 1
+		const movies = [...this.state.movies];
+		movies[index] = { ...movies[index] };
+		movies[index].liked ^= true;
+		this.setState({ movies });
 	};
 
 	render() {
@@ -51,20 +65,31 @@ class Movies extends Component {
 						<table className="table">
 							<thead>
 								<tr>
-									{this.state.tableHead.map(row => (
-										<th key={row} scope="col">
+									{this.state.tableHead.map((row, i) => (
+										<th key={row + i} scope="col">
 											{row}
 										</th>
 									))}
 								</tr>
 							</thead>
 							<tbody>
-								{this.state.movies.map(movie => (
+								{this.state.movies.map((movie, index) => (
 									<tr key={movie._id}>
 										<td>{movie.title}</td>
 										<td>{movie.genre.name}</td>
 										<td>{movie.numberInStock}</td>
 										<td>{movie.dailyRentalRate}</td>
+										<td>
+											<Like
+												onLike={() => {
+													this.handleLike(
+														movie,
+														index
+													);
+												}}
+												liked={movie.liked}
+											/>
+										</td>
 										<td>
 											<button
 												onClick={() => {
