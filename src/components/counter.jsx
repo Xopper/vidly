@@ -12,25 +12,23 @@ const formatCount = counter => {
 };
 
 const Counter = props => {
+	const { counter, onIncrement, onDecrement, onDelete } = props;
 	return (
 		<>
-			<span className={getBadgeClass(props.counter)}>
-				{formatCount(props.counter)}
+			<span className={getBadgeClass(counter)}>
+				{formatCount(counter)}
 			</span>
-			<button className="btn btn-dark btn-sm" onClick={props.onIncrement}>
+			<button className="btn btn-dark btn-sm" onClick={onIncrement}>
 				Increase
 			</button>
 			<button
 				className="btn btn-info btn-sm ml-2"
-				onClick={props.onDecrement}
-				disabled={props.counter.value === 0}
+				onClick={onDecrement}
+				disabled={counter.value === 0}
 			>
 				Decrease
 			</button>
-			<button
-				className="btn btn-danger btn-sm ml-2"
-				onClick={props.onDelete}
-			>
+			<button className="btn btn-danger btn-sm ml-2" onClick={onDelete}>
 				Delete
 			</button>
 			<br></br>
