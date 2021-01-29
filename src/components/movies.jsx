@@ -20,7 +20,7 @@ class Movies extends Component {
 		});
 	};
 
-	handleLike = (movie, index) => {
+	handleLike = movie => {
 		/**
 		 * this is a second way to do cloning
 		 * and updating state
@@ -28,6 +28,7 @@ class Movies extends Component {
 
 		// foo ^= ture; => toggling  if its true make it false , Nate that it returns 0 or 1
 		const movies = [...this.state.movies];
+		const index = movies.indexOf(movie);
 		movies[index] = { ...movies[index] };
 		movies[index].liked ^= true;
 		this.setState({ movies });
@@ -88,7 +89,7 @@ class Movies extends Component {
 								</tr>
 							</thead>
 							<tbody>
-								{movies.map((movie, index) => (
+								{movies.map(movie => (
 									<tr key={movie._id}>
 										<td>{movie.title}</td>
 										<td>{movie.genre.name}</td>
@@ -97,10 +98,7 @@ class Movies extends Component {
 										<td>
 											<Like
 												onLike={() => {
-													this.handleLike(
-														movie,
-														index
-													);
+													this.handleLike(movie);
 												}}
 												liked={movie.liked}
 											/>
