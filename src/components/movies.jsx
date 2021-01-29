@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import Like from "./like";
+import Like from "./common/like";
 import { getMovies } from "../services/fakeMovieService";
+import Pagination from "./common/pagination";
 
 class Movies extends Component {
 	state = {
@@ -27,6 +28,10 @@ class Movies extends Component {
 		movies[index] = { ...movies[index] };
 		movies[index].liked ^= true;
 		this.setState({ movies });
+	};
+
+	handlePageChange = () => {
+		console.log("tach");
 	};
 
 	render() {
@@ -104,6 +109,11 @@ class Movies extends Component {
 								))}
 							</tbody>
 						</table>
+						<Pagination
+							itemsCount={count}
+							pagSize={4}
+							onPageChange={this.handlePageChange}
+						/>
 					</main>
 				</>
 			);
