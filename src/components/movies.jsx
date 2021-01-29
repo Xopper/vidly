@@ -6,7 +6,9 @@ import Pagination from "./common/pagination";
 class Movies extends Component {
 	state = {
 		movies: getMovies(),
-		tableHead: ["Title", "Genre", "Stock", "Rate", "", ""]
+		tableHead: ["Title", "Genre", "Stock", "Rate", "", ""],
+		pageSize: 4,
+		curretPage: 1
 	};
 
 	handleDelete = movie => {
@@ -30,8 +32,8 @@ class Movies extends Component {
 		this.setState({ movies });
 	};
 
-	handlePageChange = () => {
-		console.log("tach");
+	handlePageChange = page => {
+		this.setState({ curretPage: page });
 	};
 
 	render() {
@@ -111,7 +113,8 @@ class Movies extends Component {
 						</table>
 						<Pagination
 							itemsCount={count}
-							pagSize={4}
+							pageSize={this.state.pageSize}
+							currentPage={this.state.curretPage}
 							onPageChange={this.handlePageChange}
 						/>
 					</main>
