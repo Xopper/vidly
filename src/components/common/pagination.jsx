@@ -14,6 +14,7 @@ function Pagination(props) {
 				{pagesList.map((page, index) => (
 					<li
 						key={index}
+						style={{ cursor: "pointer" }}
 						className={
 							"page-item " +
 							(currentPage === page ? "active" : "")

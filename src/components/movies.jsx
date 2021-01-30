@@ -3,16 +3,27 @@ import Like from "./common/like";
 import { getMovies } from "../services/fakeMovieService";
 import Pagination, { getcurrentPage } from "./common/pagination";
 import { paginate } from "../utils/paginate";
+import { getGenres } from "../services/fakeGenreService";
+import ListGroup from "./common/listGroup";
 
 class Movies extends Component {
 	state = {
-		movies: getMovies(),
+		movies: [],
+		genres: [],
 		tableHead: ["Title", "Genre", "Stock", "Rate", "", ""],
 		pageSize: 4,
 		currentPage: 1
 	};
 
-	handleDelete = (itemsCount, movie) => {
+	componentDidMount() {
+		const genres = [{ name: "All Genres" }, ...getGenres()];
+		this.setState({
+			movies: getMovies(),
+			genres
+		});
+	}
+
+	handleDelete = movie => {
 		this.setState({
 			movies: this.state.movies.filter(elem => {
 				return elem._id !== movie._id;
@@ -45,96 +56,120 @@ class Movies extends Component {
 		this.setState({ currentPage: page });
 	};
 
+	handleItemSelect = genre => {
+		this.setState({
+			selectedItem: genre,
+			currentPage: 1
+		});
+	};
+
 	render() {
 		const { length: count } = this.state.movies;
+
 		const {
 			pageSize,
 			currentPage,
 			tableHead,
-			movies: allMovies
+			movies: allMovies,
+			selectedItem
 		} = this.state;
-		const movies = paginate(allMovies, currentPage, pageSize);
+
+		const filtred =
+			selectedItem && selectedItem._id
+				? allMovies.filter(m => m.genre._id === selectedItem._id)
+				: allMovies;
+
+		const movies = paginate(filtred, currentPage, pageSize);
 
 		if (count !== 0) {
 			return (
-				<>
-					<main className="container">
-						<div
-							style={{
-								marginTop: "20px",
-								fontSize: "18px",
-								fontWeight: "bold",
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "center"
-							}}
-						>
-							There is
-							<h5
+				<main className="container mt-5">
+					<div className="row">
+						<div className="col-3">
+							<ListGroup
+								items={this.state.genres}
+								selectedItem={this.state.selectedItem}
+								onItemSelect={this.handleItemSelect}
+							/>
+						</div>
+						<div className="col">
+							<div
 								style={{
+									marginTop: "20px",
 									fontSize: "18px",
-									fontWeight: "bolder",
-									color: "crimson",
-									paddingLeft: 4,
-									paddingRight: 4,
-									margin: 0
+									fontWeight: "bold",
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "center"
 								}}
 							>
-								{count}
-							</h5>
-							{count > 1 ? "movies" : "movie"} in Database
-						</div>
-						<br></br>
-						<table className="table">
-							<thead>
-								<tr>
-									{tableHead.map((row, i) => (
-										<th key={row + i} scope="col">
-											{row}
-										</th>
-									))}
-								</tr>
-							</thead>
-							<tbody>
-								{movies.map(movie => (
-									<tr key={movie._id}>
-										<td>{movie.title}</td>
-										<td>{movie.genre.name}</td>
-										<td>{movie.numberInStock}</td>
-										<td>{movie.dailyRentalRate}</td>
-										<td>
-											<Like
-												onLike={() => {
-													this.handleLike(movie);
-												}}
-												liked={movie.liked}
-											/>
-										</td>
-										<td>
-											<button
-												onClick={() => {
-													this.handleDelete(
-														movies.length,
-														movie
-													);
-												}}
-												className="btn btn-danger btn-sm"
-											>
-												Delete
-											</button>
-										</td>
+								There is
+								<h5
+									style={{
+										fontSize: "18px",
+										fontWeight: "bolder",
+										color: "crimson",
+										paddingLeft: 4,
+										paddingRight: 4,
+										margin: 0
+									}}
+								>
+									{filtred.length}
+								</h5>
+								{filtred.length > 1 ? "movies" : "movie"} in
+								Database
+							</div>
+							<br></br>
+							<table className="table">
+								<thead>
+									<tr>
+										{tableHead.map((row, i) => (
+											<th key={row + i} scope="col">
+												{row}
+											</th>
+										))}
 									</tr>
-								))}
-							</tbody>
-						</table>
-						<Pagination
-							itemsCount={count}
-							pageSize={pageSize}
-							currentPage={currentPage}
-							onPageChange={this.handlePageChange}
-						/>
-					</main>
-				</>
+								</thead>
+								<tbody>
+									{movies.map(movie => (
+										<tr key={movie._id}>
+											<td>{movie.title}</td>
+											<td>{movie.genre.name}</td>
+											<td>{movie.numberInStock}</td>
+											<td>{movie.dailyRentalRate}</td>
+											<td>
+												<Like
+													onLike={() => {
+														this.handleLike(movie);
+													}}
+													liked={movie.liked}
+												/>
+											</td>
+											<td>
+												<button
+													onClick={() => {
+														this.handleDelete(
+															movie
+														);
+													}}
+													className="btn btn-danger btn-sm"
+												>
+													Delete
+												</button>
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+							<Pagination
+								itemsCount={filtred.length}
+								pageSize={pageSize}
+								currentPage={currentPage}
+								onPageChange={this.handlePageChange}
+							/>
+						</div>
+					</div>
+				</main>
 			);
 		}
 		return (
