@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Like from "./common/like";
 import { getMovies } from "../services/fakeMovieService";
-import Pagination from "./common/pagination";
+import Pagination, { getcurrentPage } from "./common/pagination";
 import { paginate } from "../utils/paginate";
 
 class Movies extends Component {
@@ -12,11 +12,18 @@ class Movies extends Component {
 		currentPage: 1
 	};
 
-	handleDelete = movie => {
+	handleDelete = (itemsCount, movie) => {
 		this.setState({
 			movies: this.state.movies.filter(elem => {
 				return elem._id !== movie._id;
 			})
+		});
+		this.setState({
+			currentPage: getcurrentPage(
+				this.state.movies.length - 0x1,
+				this.state.pageSize,
+				this.state.currentPage
+			)
 		});
 	};
 
@@ -26,7 +33,7 @@ class Movies extends Component {
 		 * and updating state
 		 */
 
-		// foo ^= ture; => toggling  if its true make it false , Nate that it returns 0 or 1
+		// foo ^= ture; => toggling the value if its true make it false , Nate that it returns 0 or 1
 		const movies = [...this.state.movies];
 		const index = movies.indexOf(movie);
 		movies[index] = { ...movies[index] };
@@ -106,7 +113,10 @@ class Movies extends Component {
 										<td>
 											<button
 												onClick={() => {
-													this.handleDelete(movie);
+													this.handleDelete(
+														movies.length,
+														movie
+													);
 												}}
 												className="btn btn-danger btn-sm"
 											>
