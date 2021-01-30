@@ -13,10 +13,10 @@ class Movies extends Component {
 		tableHead: new Map([
 			["Title", "title"],
 			["Genre", "genre.name"],
-			["Stock", "test"],
-			["Rate", "test"],
+			["Stock", "stock"],
+			["Rate", "rate"],
 			[""],
-			[""]
+			[null]
 		]),
 		pageSize: 4,
 		currentPage: 1
@@ -70,7 +70,9 @@ class Movies extends Component {
 		});
 	};
 
-	handleSort = () => {};
+	handleSort = (item) => {
+		console.log(item);
+	};
 
 	render() {
 		const { length: count } = this.state.movies;

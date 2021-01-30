@@ -9,16 +9,20 @@ const MoviesTable = props => {
 		onDelete,
 		onSort
 	} = props;
+	const tableKeys = Array.from(tableHead.keys());
+	console.log(tableKeys);
+	const tableValues = Array.from(tableHead.values());
 	return (
 		<>
+
 			<br></br>
 			<table className="table">
 				<thead>
 					<tr>
-						{tableHead.map((row, i) => (
+						{tableKeys.map((row, i) => (
 							<th
-								key={row + i}
-								onClick={row && (() => onSort())}
+								key={i}
+								onClick={() => (row && onSort(tableValues[i]))}
 								scope="col"
 							>
 								{row}
