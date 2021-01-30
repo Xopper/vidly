@@ -2,7 +2,13 @@ import React from "react";
 import Like from "./common/like";
 
 const MoviesTable = props => {
-	const { items: movies, itemsTable: tableHead, onLike, onDelete } = props;
+	const {
+		items: movies,
+		itemsTable: tableHead,
+		onLike,
+		onDelete,
+		onSort
+	} = props;
 	return (
 		<>
 			<br></br>
@@ -10,7 +16,11 @@ const MoviesTable = props => {
 				<thead>
 					<tr>
 						{tableHead.map((row, i) => (
-							<th key={row + i} scope="col">
+							<th
+								key={row + i}
+								onClick={row && (() => onSort())}
+								scope="col"
+							>
 								{row}
 							</th>
 						))}

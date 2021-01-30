@@ -10,7 +10,14 @@ class Movies extends Component {
 	state = {
 		movies: [],
 		genres: [],
-		tableHead: ["Title", "Genre", "Stock", "Rate", "", ""],
+		tableHead: new Map([
+			["Title", "title"],
+			["Genre", "genre.name"],
+			["Stock", "test"],
+			["Rate", "test"],
+			[""],
+			[""]
+		]),
 		pageSize: 4,
 		currentPage: 1
 	};
@@ -62,6 +69,8 @@ class Movies extends Component {
 			currentPage: 1
 		});
 	};
+
+	handleSort = () => {};
 
 	render() {
 		const { length: count } = this.state.movies;
@@ -124,6 +133,7 @@ class Movies extends Component {
 								itemsTable={tableHead}
 								onLike={this.handleLike}
 								onDelete={this.handleDelete}
+								onSort={this.handleSort}
 							/>
 							<Pagination
 								itemsCount={filtred.length}
