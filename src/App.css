@@ -1,0 +1,16 @@
+.custom-text {
+	margin-top: 20px;
+	font-size: 18px;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.custom-counter {
+	font-size: 18px;
+	font-weight: bolder;
+	color: crimson;
+	padding-left: 4px;
+	padding-right: 4px;
+	margin: 0;
+}

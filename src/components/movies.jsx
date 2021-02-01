@@ -5,6 +5,7 @@ import { paginate } from "../utils/paginate";
 import { getGenres } from "../services/fakeGenreService";
 import ListGroup from "./common/listGroup";
 import MoviesTable from "./moviesTable";
+import _ from "lodash";
 
 class Movies extends Component {
 	state = {
@@ -13,13 +14,14 @@ class Movies extends Component {
 		tableHead: new Map([
 			["Title", "title"],
 			["Genre", "genre.name"],
-			["Stock", "stock"],
-			["Rate", "rate"],
+			["Stock", "numberInStock"],
+			["Rate", "dailyRentalRate"],
 			[""],
 			[null]
 		]),
 		pageSize: 4,
-		currentPage: 1
+		currentPage: 1,
+		sortColumn: { path: "title", order: "asc" }
 	};
 
 	componentDidMount() {
@@ -70,8 +72,8 @@ class Movies extends Component {
 		});
 	};
 
-	handleSort = (item) => {
-		console.log(item);
+	handleSort = sortColumn => {
+		this.setState({ sortColumn });
 	};
 
 	render() {
@@ -81,6 +83,7 @@ class Movies extends Component {
 			pageSize,
 			currentPage,
 			tableHead,
+			sortColumn,
 			movies: allMovies,
 			selectedItem
 		} = this.state;
@@ -89,8 +92,13 @@ class Movies extends Component {
 			selectedItem && selectedItem._id
 				? allMovies.filter(m => m.genre._id === selectedItem._id)
 				: allMovies;
+		const sorted = _.orderBy(
+			filtred,
+			[sortColumn.path],
+			[sortColumn.order]
+		);
 
-		const movies = paginate(filtred, currentPage, pageSize);
+		const movies = paginate(sorted, currentPage, pageSize);
 
 		if (count !== 0) {
 			return (
@@ -104,27 +112,9 @@ class Movies extends Component {
 							/>
 						</div>
 						<div className="col">
-							<div
-								style={{
-									marginTop: "20px",
-									fontSize: "18px",
-									fontWeight: "bold",
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center"
-								}}
-							>
+							<div className="custom-text">
 								There is
-								<h5
-									style={{
-										fontSize: "18px",
-										fontWeight: "bolder",
-										color: "crimson",
-										paddingLeft: 4,
-										paddingRight: 4,
-										margin: 0
-									}}
-								>
+								<h5 className="custom-counter">
 									{filtred.length}
 								</h5>
 								{filtred.length > 1 ? "movies" : "movie"} in
@@ -134,6 +124,7 @@ class Movies extends Component {
 								items={movies}
 								itemsTable={tableHead}
 								onLike={this.handleLike}
+								sortColumn={sortColumn}
 								onDelete={this.handleDelete}
 								onSort={this.handleSort}
 							/>
@@ -151,18 +142,7 @@ class Movies extends Component {
 		return (
 			<>
 				<main className="container">
-					<div
-						style={{
-							marginTop: "20px",
-							fontSize: "18px",
-							fontWeight: "bold",
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center"
-						}}
-					>
-						There is no movies!
-					</div>
+					<div className="custom-text">There is no movies!</div>
 				</main>
 			</>
 		);
