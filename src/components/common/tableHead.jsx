@@ -5,7 +5,7 @@ class tableHead extends Component {
 		let sortColumn = { ...this.props.sortColumn };
 		if (sortColumn.path === path)
 			sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-		else sortColumn = { path, order: "asc" };
+		else sortColumn = { path, order: "asc" }; // default sorting order
 		this.props.onSort(sortColumn);
 	};
 
@@ -23,6 +23,7 @@ class tableHead extends Component {
 				<tr>
 					{this.props.columns.map((column, i) => (
 						<th
+							className="clickable"
 							key={i}
 							onClick={() =>
 								column.path && this.raiseSort(column.path)

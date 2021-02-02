@@ -14,3 +14,7 @@
 	padding-right: 4px;
 	margin: 0;
 }
+
+.clickable {
+	cursor: pointer;
+}

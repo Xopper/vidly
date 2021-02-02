@@ -11,14 +11,6 @@ class Movies extends Component {
 	state = {
 		movies: [],
 		genres: [],
-		tableHead: new Map([
-			["Title", "title"],
-			["Genre", "genre.name"],
-			["Stock", "numberInStock"],
-			["Rate", "dailyRentalRate"],
-			[""],
-			[null]
-		]),
 		pageSize: 4,
 		currentPage: 1,
 		sortColumn: { path: "title", order: "asc" }
@@ -28,7 +20,7 @@ class Movies extends Component {
 		const genres = [{ name: "All Genres" }, ...getGenres()];
 		this.setState({
 			movies: getMovies(),
-			genres
+			genres // instead of genres : genres
 		});
 	}
 
@@ -73,17 +65,13 @@ class Movies extends Component {
 	};
 
 	handleSort = sortColumn => {
-		// console.log(sortColumn);
 		this.setState({ sortColumn });
 	};
 
-	render() {
-		const { length: count } = this.state.movies;
-
+	getSortedData = () => {
 		const {
 			pageSize,
 			currentPage,
-			tableHead,
 			sortColumn,
 			movies: allMovies,
 			selectedItem
@@ -100,6 +88,15 @@ class Movies extends Component {
 		);
 
 		const movies = paginate(sorted, currentPage, pageSize);
+		return { totalCount: filtred.length, data: movies };
+	};
+
+	render() {
+		const { length: count } = this.state.movies;
+
+		const { pageSize, currentPage, sortColumn } = this.state;
+
+		const { totalCount, data } = this.getSortedData();
 
 		if (count !== 0) {
 			return (
@@ -115,22 +112,19 @@ class Movies extends Component {
 						<div className="col">
 							<div className="custom-text">
 								There is
-								<h5 className="custom-counter">
-									{filtred.length}
-								</h5>
-								{filtred.length > 1 ? "movies" : "movie"} in
+								<h5 className="custom-counter">{totalCount}</h5>
+								{totalCount > 1 ? "movies" : "movie"} in
 								Database
 							</div>
 							<MoviesTable
-								items={movies}
-								itemsTable={tableHead}
+								items={data}
 								onLike={this.handleLike}
 								sortColumn={sortColumn}
 								onDelete={this.handleDelete}
 								onSort={this.handleSort}
 							/>
 							<Pagination
-								itemsCount={filtred.length}
+								itemsCount={totalCount}
 								pageSize={pageSize}
 								currentPage={currentPage}
 								onPageChange={this.handlePageChange}
@@ -141,11 +135,9 @@ class Movies extends Component {
 			);
 		}
 		return (
-			<>
-				<main className="container">
-					<div className="custom-text">There is no movies!</div>
-				</main>
-			</>
+			<main className="container">
+				<div className="custom-text">There is no movies!</div>
+			</main>
 		);
 	}
 }

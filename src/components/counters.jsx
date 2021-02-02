@@ -1,8 +1,13 @@
 import React from "react";
 import Counter from "./counter";
 
-const Counters = props => {
-	const { onReset, counters, onDelete, onIncrement, onDecrement } = props;
+const Counters = ({
+	onReset,
+	counters,
+	onDelete,
+	onIncrement,
+	onDecrement
+}) => {
 	return (
 		<>
 			<button onClick={onReset} className="btn btn-primary btn-sm m-3">
